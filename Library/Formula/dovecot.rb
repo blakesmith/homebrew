@@ -1,27 +1,23 @@
 require 'formula'
 
 class Dovecot <Formula
-  url 'http://www.dovecot.org/releases/1.2/dovecot-1.2.11.tar.gz'
+  url 'http://www.dovecot.org/releases/1.2/dovecot-1.2.12.tar.gz'
   homepage 'http://dovecot.org/'
-  md5 'bdac013fd57aa616ea4bdd9ac34557c6'
+  md5 'cc8e5c53cd0943ce0b5e1087356ad4ea'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--sysconfdir=#{prefix}/etc",
-                          "--localstatedir=#{prefix}/var",
-                          "--with-ssl=openssl",
-                          "--with-ioloop=kqueue"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}",
+                          "--with-ssl=openssl"
     system "make install"
-
-    # TODO: automate some of the caveats?
   end
 
   def caveats; <<-EOS
 For Dovecot to work, you will need to do the following:
 
-1) create configuration in #{prefix}/etc
+1) Create configuration in #{etc}
 
 2) If required by the configuration above, create a dovecot user and group
 
@@ -35,7 +31,7 @@ For Dovecot to work, you will need to do the following:
         <string>org.dovecot</string>
         <key>ProgramArguments</key>
         <array>
-                <string>#{prefix}/sbin/dovecot</string>
+                <string>#{sbin}/dovecot</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
